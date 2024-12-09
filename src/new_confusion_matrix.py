@@ -139,7 +139,8 @@ if __name__ == '__main__':
 
 
  
-    dest_path = '../testing/dirt_V1/'
+    #dest_path = '../testing/dirt_V1/'
+    dest_path = "../testing/dirt_V2/"
     for csv in os.listdir(dest_path):
         path_to_csv = dest_path
         if csv.endswith('csv') and 'matrix' not in csv:
