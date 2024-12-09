@@ -62,7 +62,8 @@ else:
 def load_dirt():
     cfg = get_cfg()
     cfg.merge_from_file("../../detectron2/configs/COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml") 
-    cfg.MODEL.WEIGHTS = '../model_weights/exp1_model_10.8K.pth'
+    #cfg.MODEL.WEIGHTS = '../model_weights/exp1_model_10.8K.pth'
+    cfg.MODEL.WEIGHTS = '../model_weights/model_0008099.pth'
     cfg.MODEL.ANCHOR_GENERATOR.SIZES = [[8, 16, 32, 64, 128, 256, 512]]
     cfg.MODEL.ANCHOR_GENERATOR.ASPECT_RATIOS = [[0.5, 1.0, 1.33, 1.5, 2.0]]
     cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
@@ -404,16 +405,17 @@ if __name__ == '__main__':
     weights_type = 'detectron2'
     
     iou_threshold = 0.1
-    store_name_list = ['dirt_test']
-    dataset_list=['dirt_test']
+    store_name_list = ['dirt_test'] # The suffix to add to MODEL_NAME variable.
+    dataset_list=['dirt_test'] # Add if more than one dataset in "test_data" folder
     to_save = {i:j for i,j in zip(dataset_list,store_name_list)}
 
     for dataset in dataset_list:
         data = '../test_data'
         data = os.path.join(data,dataset)
-        dest = '../testing/dirt_V1/'
-        model_name  = 'model_exp1_10.8K_'
-        gt_class_list = ['dirt']
+        dest = '../testing/dirt_V2/' #
+        #model_name  = 'model_exp1_10.8K_'
+        model_name = "model_8.1k"
+        gt_class_list = ['dirt'] # add dirt, bird_dropping
         pred_list = ['dirt']
         save_name = model_name + to_save[dataset] 
         path_to_csv = os.path.join(dest,save_name+'.csv')

@@ -9,3 +9,7 @@ model_weights/*
 
 # Test data
 test_data/dirt_test
+
+
+# Extras
+**/**/.DS_Store
