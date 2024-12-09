@@ -77,7 +77,7 @@ def load_dirt():
 def load_car_detector():
     cfg = get_cfg()
     cfg.merge_from_file(model_zoo.get_config_file("COCO-Detection/faster_rcnn_R_50_FPN_3x.yaml"))
-    cfg.MODEL.WEIGHTS = os.path.join('car_crop_V_2.pth')
+    cfg.MODEL.WEIGHTS = os.path.join('../model_weights/car_crop_V_2.pth')
     cfg.MODEL.ANCHOR_GENERATOR.SIZES = [[16, 32, 64, 128, 256, ]]
     cfg.MODEL.ANCHOR_GENERATOR.ASPECT_RATIOS = [[0.5, 0.75, 1.0, 1.5, 2.0]]
     cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
@@ -111,7 +111,8 @@ model_classes = ['dirt']
 print('All models loaded')
 # exit()
 
-def compare_damages_generic_detectron2(data, dest, iou_threshold, damage_list,gt_class_list,save_name,overlap_mode='bbox'):
+def compare_damages_generic_detectron2(data, dest, iou_threshold, damage_list,gt_class_list,
+                                       save_name,overlap_mode='bbox'):
 
     d = {}
     # manual_sheet = {}
@@ -366,6 +367,8 @@ def transform_actual_class(actual_class,divided=False): # divided is used if we 
             return 'broken'
         elif(actual_class in ['rust','paintedrust']):
             return 'rust'
+        elif actual_class in ['dirt', 'bird_dropping']:
+            return 'dirt'
         else:
             return actual_class
     else:
@@ -415,7 +418,7 @@ if __name__ == '__main__':
         dest = '../testing/dirt_V2/' #
         #model_name  = 'model_exp1_10.8K_'
         model_name = "model_8.1k"
-        gt_class_list = ['dirt'] # add dirt, bird_dropping
+        gt_class_list = ['dirt', 'bird_dropping'] # add dirt, bird_dropping
         pred_list = ['dirt']
         save_name = model_name + to_save[dataset] 
         path_to_csv = os.path.join(dest,save_name+'.csv')
