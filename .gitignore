@@ -1,0 +1,11 @@
+# Result dirs
+testing/*
+!testing/.gitkeep
+
+
+# model dirs
+model_weights/*
+!model_weights/.gitkeep
+
+# Test data
+test_data/dirt_test
