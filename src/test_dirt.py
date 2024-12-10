@@ -112,7 +112,7 @@ print('All models loaded')
 # exit()
 
 def compare_damages_generic_detectron2(data, dest, iou_threshold, damage_list,gt_class_list,
-                                       save_name,overlap_mode='bbox'):
+                                       save_name, remove_overlapping_fps, remove_duplicate_fps, overlap_mode='bbox'):
 
     d = {}
     # manual_sheet = {}
@@ -161,6 +161,12 @@ def compare_damages_generic_detectron2(data, dest, iou_threshold, damage_list,gt
        
         panels_dict = detectron_prediction(dirt_predictor,test_image)
         final_rois,final_scores,final_class_ids,mid_masks,predicted_class_names = masking_utils.process_damage_dict(panels_dict,damage_list,limit_dict)
+
+
+        #remove duplicate FPs when FPs are overlapping with each other.
+        if remove_overlapping_fps:
+            final_rois,final_scores,final_class_ids,mid_masks,predicted_class_names= masking_utils.remove_duplicate_damages(final_rois,final_class_ids, final_scores,mid_masks,predicted_class_names) 
+
         if not len(mid_masks):
             mid_masks = [None for i in range(len(final_rois))]
 
@@ -346,9 +352,9 @@ def compare_damages_generic_detectron2(data, dest, iou_threshold, damage_list,gt
                 'gt_bb':gt_bb,'pred_bb':'','gt_mask':gt_mask,'pred_mask':'',"shift-point":point}) #'IoU':iou'confidence':final_scores[i]
                 gt_status_list[j] = True
 
-
-        #print("Removing false positives for image: ",filename)
-        #d[filename] = masking_utils.remove_wrong_false_positive(d[filename])
+        if remove_duplicate_fps: 
+            print("Removing false positives for image: ",filename)
+            d[filename] = masking_utils.remove_wrong_false_positive(d[filename])
         # break
 # store json________________________________________________________________________________________________________________________________________________
     # exit()
@@ -410,6 +416,10 @@ if __name__ == '__main__':
     make = 'any'
     model = 'any'
     weights_type = 'detectron2'
+
+    #HPs:
+    remove_overlapping_fps = True #remove duplicate FPs when FPs are overlapping with each other.
+    remove_duplicate_fps = True #Remove duplicate FPs when More than one detections are overlapping over GT but IOU of one detection is < threshold with the GT but higher with the other detection.
     
     iou_threshold = 0.1
     store_name_list = ['dirt_test'] # The suffix to add to MODEL_NAME variable.
@@ -419,10 +429,10 @@ if __name__ == '__main__':
     for dataset in dataset_list:
         data = '../test_data'
         data = os.path.join(data,dataset)
-        dest = '../testing/dirt_V3/' #
+        dest = '../testing/dirt_V4/' #
         #model_name  = 'model_exp1_10.8K_'
         model_name = "model_8.1k"
-        gt_class_list = ['bird_dropping'] # add dirt, bird_dropping
+        gt_class_list = ['dirt', 'bird_dropping'] # add dirt, bird_dropping
         pred_list = ['dirt']
         save_name = model_name + to_save[dataset] 
         path_to_csv = os.path.join(dest,save_name+'.csv')
@@ -430,7 +440,8 @@ if __name__ == '__main__':
         print("Dataset-used: ",data)
         print("dest: ",dest)
         # continue
-        d = compare_damages_generic_detectron2(data, dest, iou_threshold,pred_list,gt_class_list,save_name)
+        d = compare_damages_generic_detectron2(data, dest, iou_threshold,pred_list,gt_class_list,
+                                               save_name, remove_overlapping_fps, remove_duplicate_fps)
 
         result_csv.write_to_csv(d,path_to_csv)
         # break
