@@ -345,6 +345,10 @@ def compare_damages_generic_detectron2(data, dest, iou_threshold, damage_list,gt
                 'status':'non-detection','IoU':'','confidence':'',
                 'gt_bb':gt_bb,'pred_bb':'','gt_mask':gt_mask,'pred_mask':'',"shift-point":point}) #'IoU':iou'confidence':final_scores[i]
                 gt_status_list[j] = True
+
+
+        #print("Removing false positives for image: ",filename)
+        #d[filename] = masking_utils.remove_wrong_false_positive(d[filename])
         # break
 # store json________________________________________________________________________________________________________________________________________________
     # exit()
@@ -415,10 +419,10 @@ if __name__ == '__main__':
     for dataset in dataset_list:
         data = '../test_data'
         data = os.path.join(data,dataset)
-        dest = '../testing/dirt_V2/' #
+        dest = '../testing/dirt_V3/' #
         #model_name  = 'model_exp1_10.8K_'
         model_name = "model_8.1k"
-        gt_class_list = ['dirt', 'bird_dropping'] # add dirt, bird_dropping
+        gt_class_list = ['bird_dropping'] # add dirt, bird_dropping
         pred_list = ['dirt']
         save_name = model_name + to_save[dataset] 
         path_to_csv = os.path.join(dest,save_name+'.csv')
