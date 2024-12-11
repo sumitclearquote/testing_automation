@@ -430,10 +430,10 @@ if __name__ == '__main__':
     for dataset in dataset_list:
         data = '../test_data'
         data = os.path.join(data,dataset)
-        dest = '../testing/dirt_exp3/' #
+        dest = '../testing/dirt_exp3_onlydirt/' #
         #model_name  = 'model_exp1_10.8K_'
         model_name = "model_exp3_1999_"
-        gt_class_list = ['dirt', 'bird_dropping'] # add dirt, bird_dropping
+        gt_class_list = ['dirt'] # add dirt, bird_dropping
         pred_list = ['dirt']
         save_name = model_name + to_save[dataset] 
         path_to_csv = os.path.join(dest,save_name+'.csv')
