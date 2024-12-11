@@ -146,11 +146,12 @@ if __name__ == '__main__':
     # store_name_list = ['detectron_prodmsil']
     # dataset_list=['MSIL_10_config']
 
-    store_name_list = ['model_8.1K_dirt_test']
+    #store_name_list = ['model_8.1K_dirt_test']
+    store_name_list = ['model_exp3_3999_dirt_test']
     dataset_list=['dirt_test']
 
     to_save = {j:i for i,j in zip(dataset_list,store_name_list)}
-    dest = '../testing/dirt_V1/'
+    dest = '../testing/dirt_exp3/'
     mask_threshold = 0.4
     car_crop = True
     for test_json in os.listdir(dest):

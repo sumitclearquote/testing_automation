@@ -58,12 +58,13 @@ if not RUN_ON_CPU:
 else:
     GPU_PRESENT = False
 
+model_path = "../../detectron2/mahindra_dirt/exp3/model_0003999.pth"
 
 def load_dirt():
     cfg = get_cfg()
     cfg.merge_from_file("../../detectron2/configs/COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml") 
     #cfg.MODEL.WEIGHTS = '../model_weights/exp1_model_10.8K.pth'
-    cfg.MODEL.WEIGHTS = '../model_weights/model_0008099.pth'
+    cfg.MODEL.WEIGHTS = model_path
     cfg.MODEL.ANCHOR_GENERATOR.SIZES = [[8, 16, 32, 64, 128, 256, 512]]
     cfg.MODEL.ANCHOR_GENERATOR.ASPECT_RATIOS = [[0.5, 1.0, 1.33, 1.5, 2.0]]
     cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
@@ -429,9 +430,9 @@ if __name__ == '__main__':
     for dataset in dataset_list:
         data = '../test_data'
         data = os.path.join(data,dataset)
-        dest = '../testing/dirt_V4/' #
+        dest = '../testing/dirt_exp3/' #
         #model_name  = 'model_exp1_10.8K_'
-        model_name = "model_8.1k"
+        model_name = "model_exp3_3999_"
         gt_class_list = ['dirt', 'bird_dropping'] # add dirt, bird_dropping
         pred_list = ['dirt']
         save_name = model_name + to_save[dataset] 
